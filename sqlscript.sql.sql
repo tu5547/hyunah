@@ -10,17 +10,17 @@ select * from SCOTT.dept;
 
 select * from HR.departments;
 
-select employee_id,last_name,salary,salary*commission_pct as "»ó¿©",hire_date from HR.employees;
+select employee_id,last_name,salary,salary*commission_pct as "ìƒì—¬",hire_date from HR.employees;
 
-select he.employee_id,he.last_name,he.salary,he.salary*commission_pct as "»ó¿©",he.hire_date from HR.employees he;
+select he.employee_id,he.last_name,he.salary,he.salary*commission_pct as "ìƒì—¬",he.hire_date from HR.employees he;
 
-select department_id, employee_id, last_name, salary, salary*commission_pct as "¼ö´ç" from HR.employees order by salary desc, department_id asc;
+select department_id, employee_id, last_name, salary, salary*commission_pct as "ìˆ˜ë‹¹" from HR.employees order by salary desc, department_id asc;
 
-select department_id, employee_id, last_name, salary, salary*commission_pct as "¼ö´ç" from HR.employees order by department_id asc;
+select department_id, employee_id, last_name, salary, salary*commission_pct as "ìˆ˜ë‹¹" from HR.employees order by department_id asc;
 
-select department_id, employee_id, last_name, salary, salary*commission_pct as "¼ö´ç" from HR.employees order by department_id asc, salary desc;
+select department_id, employee_id, last_name, salary, salary*commission_pct as "ìˆ˜ë‹¹" from HR.employees order by department_id asc, salary desc;
 
-select department_id, employee_id, last_name, salary, salary*commission_pct as "¼ö´ç" from HR.employees order by salary desc, department_id asc;
+select department_id, employee_id, last_name, salary, salary*commission_pct as "ìˆ˜ë‹¹" from HR.employees order by salary desc, department_id asc;
 
 select distinct job from scott.emp order by job;
 
@@ -67,4 +67,12 @@ select ename from scott.emp where comm is null;
 select ename from scott.emp where comm is not null;
 
 
-select to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') - to_date(to_char(to_date('20120220042517','yyyymmddhh24miss'), 'yyyymmdd'), 'yyyymmdd') from dual;
+select last_name,salary,commission_pct,
+	case when nvl(commission_pct,0)=0 then salary*0.2          
+		  when nvl(commission_pct,0)!=0 then salary+(commission_pct*0.2) end as s
+from hr.employees
+
+select employee_id,last_name,hire_date,
+(to_number(to_char(sysdate,'yyyy'))- to_number(to_char(hire_date, 'yyyy')))a
+from hr.employees
+where (to_number(to_char(sysdate,'yyyy'))- to_number(to_char(hire_date, 'yyyy')))>=33;
