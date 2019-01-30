@@ -1,0 +1,82 @@
+
+1. 월별 입사자수의 합을 출력
+
+select to_char(hire_date,'yyyy_mm') as AAA,sum(employee_id) as EM 
+from hr.employees
+group by to_char(hire_date,'yyyy_mm')
+order by 1
+
+
+
+2. 직업이 MANAGER는 제외하고, 직업별 급여총액이 5천이상인 직업과 COUNT, 총액을 출력
+
+select job_id,count(job_id) as CJ,sum(salary) as SS
+from hr.employees
+where job_id !='MANAGER'
+and salary >= 5000
+group by job_id
+
+
+
+3. 이름이 N으로 끝나는 사원을 출력
+
+select last_name from hr.employees where last_name like '%n'
+
+
+
+4. 부서테이블(DEPT)의 LOC를 공백을 제거하여 출력
+
+select replace(trim(loc),' ','') 
+from scott.dept
+
+
+5. 이름과 급여 등급을 출력.
+
+등급은 급여가 5천이상이면 A, 4천이상이면 B, 3천이상이면 C, 2천이상이면 D, 1천이상이면 E, 1천미만이면 F
+
+(CASE문 사용)
+
+
+select last_name,salary,
+    case when salary>=5000 then 'A'
+         when salary>=4000 then 'B'
+         when salary>=3000 then 'c'
+         when salary>=2000 then 'd'
+         when salary>=1000 then 'e'
+         else 'f'
+         end as gradesalary
+from HR.employees
+
+
+6. 이름과 급여 등급을 출력.
+
+등급은 급여가 5천이상이면 A, 4천이상이면 B, 3천이상이면 C, 2천이상이면 D, 1천이상이면 E, 1천미만이면 F
+
+(DECODE 사용)
+
+
+-decode로 부등호를 사용하는 방법이 어려워서 못풀었습니다.
+
+
+7. 부서번호, 부서번호별 급여의 합을 출력하고 부서번호 오름차순 정렬
+
+
+
+select department_id,sum(salary)
+from hr.employees
+group by department_id
+order by department_id asc
+
+
+
+8. 6번문제의 결과값을 행열 변환한 상태로 출력(DECODE 사용) 
+
+
+
+
+9. 6번문제의 결과값을 행열 변환한 상태로 출력(CASE 사용)
+
+
+
+
+10. 6번문제의 결과값을 행열 변환한 상태로 출력(PIVOT 사용)
