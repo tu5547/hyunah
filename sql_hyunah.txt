@@ -1,0 +1,78 @@
+1. 보너스(COMM)를 받은 사원의 이름, 보너스, 부서명, 부서위치를 출력
+
+Select A.ename,A.comm,A.job,B.loc
+From scott.emp A, scott.dept B
+Where A.dept=B.dept
+And comm is not null
+
+
+2. 부서테이블에 사원테이블을 LEFT JOIN하여 출력
+(ORACLE SQL, ANSI SQL 두 방법 모두 출력)
+
+
+select * 
+from scott.dept A,scott.emp B
+where A.deptno=B.deptno(+)
+
+select *
+from scott.dept A left outer join scott.emp B on A.deptno=B.deptno
+
+
+
+3. CHICACO에서 근무하는 사원들의 이름, 직급, 급여, 부서번호, 부서명을 출력
+
+select B.ename,B.job,B.sal,B.deptno,A.dname
+from scott.dept A,scott.emp B
+where A.deptno=B.deptno(+)
+and A.loc='CHICAGO'
+
+4. 부서명, 부서별급여합을 출력
+
+select A.dname,sum(B.sal)
+from scott.dept A, scott.emp B
+where A.deptno=B.deptno(+)
+group by A.dname
+
+
+5. ROLLUP을 사용하여 (3)번의 결과 아래행에 부서별급여합의 총급여합계값 출력
+
+select A.deptno,B.ename,B.job,B.sal,A.loc,sum(sal)
+from scott.dept A, scott.emp B
+where A.deptno=B.deptno(+)
+and A.LOC='CHICAGO'
+group by rollup (A.deptno,B.ename,B.job,B.sal,A.loc)
+having (grouping(A.deptno)+grouping(B.ename)+grouping(B.job)+grouping(B.sal)+grouping(A.loc)=5
+       or grouping(A.deptno)+grouping(B.ename)+grouping(B.job)+grouping(B.sal)+grouping(A.loc)=0)
+
+
+6. DECODE를 사용하여 (4)번의 결과 부서명에 "총합" 을 출력
+
+
+
+
+7. 급여의순위, 사원명, 직업, 급여를 출력
+(RANK , OVER 사용)
+
+
+select ename,job,sal,rank() over(order by sal desc) from scott.emp
+
+8. 급여가 3번째로 높은 사원들의 급여순위, 사원명, 직업, 급여를 출력
+(DENSE_RANK , OVER 사용)
+
+select * from (select ename,job,sal,dense_rank() over(order by sal desc)as aa from scott.emp)
+where aa='3'
+
+
+9. 각 직업별 급여가 높은순서대로 급여순위, 사원명, 직업, 급여를 출력
+(RANK OVER PARTITION BY사용)
+
+select ename,job,sal,rank() over(partition by job order by sal desc) from scott.emp
+
+
+10.  각 부서별 급여가 높은순서대로 급여순위, 사원명, 급여, 부서명을 출력
+
+select A.ename,A.sal,B.dname,rank() over(partition by B.deptno order by A.sal desc)
+from scott.emp A,scott.dept B
+where A.deptno=B.deptno(+)
+
+
